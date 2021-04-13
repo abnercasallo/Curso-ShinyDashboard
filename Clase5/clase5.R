@@ -9,7 +9,6 @@ library(opencontracts)
 
 ####PROCESANDO DATA##########
 data("data120")
-data(mont)
 #View(data120)
 #class(data120)
 
@@ -77,16 +76,25 @@ ui<-dashboardPage(title= "Dashboard", skin= "green",
                     
                   ),
                   tabItem(tabName = "montos", 
-                                   plotOutput("montos"))
-                  
+                    
+                    fluidRow(
+                      column(width=9,  
+                             valueBox("9 Meses","Periodo: Marzo-Diciembre",icon=icon("eye"),color="yellow"),
+                             valueBoxOutput("valuebox"),
+                             infoBox("Dato abiertos", "100%"),
+                             ),
+                    fluidRow(box(title="GRÁFICO",plotOutput("montos"), width=9, status="primary", solidHeader=TRUE)))
                   
                   ))
-)
+))
 
 server <- function(input, output) { 
   
+  redondeo <- function(x, k) as.numeric(trimws(format(round(x, k), nsmall=2)))
   output$datos<-DT::renderDataTable(data120)
   output$montos<-renderPlot({montos})
+  output$valuebox<-renderInfoBox({valueBox(redondeo(sum((data120)[5])),"Monto Soles Millones", 
+                                        icon=icon("money"),color="red")}) 
 }
 
 shinyApp(ui, server)
