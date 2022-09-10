@@ -4,6 +4,7 @@ library(shinydashboard)
 
 ###CLASE 4
 library(tidyverse)
+#options(download.file.method = "wininet") #Para evitar error al instalar el paquete por devtools
 #devtools::install_github("manosaladata/contrataciones-estado-emergencia", subdir="Roxygen/opencontracts")
 library(opencontracts)
 
